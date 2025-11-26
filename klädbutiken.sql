@@ -92,6 +92,8 @@ Om du inte gillar det och de risker som finns kan du
 UPDATE Kunder SET Email = 'anna.new@email.com' WHERE KundID = 1;
 där vi använder PK för att lösa det.
 */
+
+/*
 SET SQL_SAFE_UPDATES = 1;
 -- uppdatera data
 UPDATE Kunder SET Email = 'anna.new@email.com' WHERE Namn = 'Anna Andersson';
@@ -110,7 +112,7 @@ SELECT * FROM Kunder WHERE KundID = 1;  -- Kolla om ändringen ser rätt ut
 -- om allt ser bra ut kör vi:
 -- COMMIT;  -- Spara ändringen permanent
 
-
+*/
 -- L3: Joins
 
 /*
@@ -138,21 +140,32 @@ SELECT * FROM Produkter;
 SELECT * FROM Kunder;
 
 -- inner join
-SELECT Kunder.Namn, Bestallningar.OrderID FROM Kunder INNER JOIN Bestallningar ON Kunder.KundID = Bestallningar.KundID;
+SELECT Kunder.Namn, Bestallningar.OrderID FROM Kunder 
+INNER JOIN Bestallningar 
+ON Kunder.KundID = Bestallningar.KundID;
 
 -- left join
-SELECT Kunder.Namn, Bestallningar.OrderID FROM Kunder LEFT JOIN Bestallningar ON Kunder.KundID = Bestallningar.KundID;
+SELECT Kunder.Namn, Bestallningar.OrderID FROM Kunder 
+LEFT JOIN Bestallningar 
+ON Kunder.KundID = Bestallningar.KundID;
 
 -- right join
-SELECT Kunder.Namn, Bestallningar.OrderID FROM Kunder LEFT JOIN Bestallningar ON Kunder.KundID = Bestallningar.KundID;
+SELECT Kunder.Namn, Bestallningar.OrderID FROM Kunder 
+LEFT JOIN Bestallningar 
+ON Kunder.KundID = Bestallningar.KundID;
 
 -- Group by, räknar antal beställninar per kund
-SELECT KundID, COUNT(OrderID) AS AntalBeställninar From Bestallningar GROUP BY KundID;
+SELECT KundID, COUNT(OrderID) AS AntalBeställninar 
+FROM Bestallningar GROUP BY KundID;
 
 -- Men med kundern namn blir det lite enklare
-SELECT Kunder.Namn, COUNT(OrderID) As Antalbeställningar FROM Bestallningar INNER JOIN Kunder ON Bestallningar.KundID = Kunder.KundID GROUP BY Kunder.Namn;
+SELECT Kunder.Namn, COUNT(OrderID) As Antalbeställningar FROM Bestallningar 
+INNER JOIN Kunder ON Bestallningar.KundID = Kunder.KundID 
+GROUP BY Kunder.Namn;
 
-SELECT Kunder.Namn, COUNT(OrderID) As Antalbeställningar FROM Bestallningar INNER JOIN Kunder ON Bestallningar.KundID = Kunder.KundID GROUP BY Kunder.Namn
+SELECT Kunder.Namn, COUNT(OrderID) As Antalbeställningar FROM Bestallningar 
+INNER JOIN Kunder ON Bestallningar.KundID = Kunder.KundID 
+GROUP BY Kunder.Namn
 HAVING COUNT(OrderID) > 2; -- För att se kunder som bara har mer än 2 beställningar
 
 -- om det inte ser bra ut så kör vi: 
