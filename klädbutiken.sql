@@ -170,3 +170,85 @@ HAVING COUNT(OrderID) > 2; -- För att se kunder som bara har mer än 2 beställ
 
 -- om det inte ser bra ut så kör vi: 
 -- ROLLBACK;  -- Ångra ändringen
+
+
+-- Lektion 4: INDEX, TRIGGERS & CONSTRAINTS
+-- INDEX – Skapa index på e-post i Kunder-tabellen
+CREATE INDEX idx_email ON Kunder(Email);
+
+-- För att se vårt index
+SHOW INDEX FROM Kunder;
+
+-- CONSTRAINTS – Säkerställa att pris alltid är större än 0, se om du kan hitta vilken rad det är
+
+ALTER TABLE Produkter 
+ADD CONSTRAINT check_pris CHECK (Pris > 0);
+
+-- testa med en produkt som har pris 0
+INSERT INTO Produkter (Namn, Pris, Kategori) 
+VALUES ('Gratisprodukt', 0, 'Kläder');
+
+-- Lägg till så vi får lagerstatur på våra produkter
+ALTER TABLE Produkter ADD COLUMN Lagerstatus INT DEFAULT 10;
+
+-- TRIGGER – Uppdatera lagersaldo efter en order
+DELIMITER $$
+
+CREATE TRIGGER uppdatera_lager
+AFTER INSERT ON Orderrader
+FOR EACH ROW
+BEGIN
+    UPDATE Produkter 
+    SET Lagerstatus = Lagerstatus - NEW.Antal
+    WHERE ProduktID = NEW.ProduktID;
+END $$
+
+DELIMITER ;
+
+INSERT INTO Orderrader (OrderID, ProduktID, Antal, Pris) 
+VALUES (1, 1, 2, 199.99);  -- Beställer 2 T-shirts
+
+SELECT * FROM Produkter WHERE ProduktID = 1;
+
+-- TRIGGER – Logga nya kunder i en logg-tabell
+CREATE TABLE Kundlogg (
+    LoggID INT AUTO_INCREMENT PRIMARY KEY,
+    KundID INT,
+    Registreringsdatum TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (KundID) REFERENCES Kunder(KundID)
+);
+
+DELIMITER $$
+
+CREATE TRIGGER logga_ny_kund
+AFTER INSERT ON Kunder
+FOR EACH ROW
+BEGIN
+    INSERT INTO Kundlogg (KundID)
+    VALUES (NEW.KundID);
+END $$
+
+DELIMITER ;
+
+-- Testa om det fungerar med en ny kund
+INSERT INTO Kunder (Namn, Email) VALUES ('Maria Karlsson', 'maria@email.com');
+SELECT * FROM Kundlogg;
+
+
+-- Lektion 5: JSON, NoSQL, Backup & Restore
+
+-- Lagra JSON i MySQL
+CREATE TABLE Produktinfo (
+    ProduktID INT PRIMARY KEY,
+    Info JSON NOT NULL
+);
+
+INSERT INTO Produktinfo (ProduktID, Info) VALUES
+(1, '{ "namn": "T-shirt", "färg": "svart", "storlek": "M" }'),
+(2, '{ "namn": "Jeans", "färg": "blå", "storlek": "L" }');
+
+-- Backup av databasen, TERMINAL!
+mysqldump -u root -p Klädbutik > kladbutik_backup.sql
+
+-- Återställ databasen från backup
+mysql -u root -p Klädbutik < kladbutik_backup.sql
