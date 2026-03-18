@@ -128,12 +128,12 @@ INSERT INTO Bestallningar (KundID, Datum) VALUE
 (3, '2024-03-12');
 
 INSERT INTO Orderrader (OrderID, ProduktID, Antal, Pris) VALUES
-(25, 1, 2, 199.99),  -- Kund 1 köper 2 T-shirts
-(26, 3, 1, 899.99),  -- Kund 1 köper 1 par Sneakers
-(27, 2, 1, 499.99),  -- Kund 1 köper 1 par Jeans
-(28, 1, 1, 199.99),  -- Kund 2 köper 1 T-shirt
-(29, 2, 1, 499.99),  -- Kund 3 köper 1 par Jeans
-(30, 3, 1, 899.99);  -- Kund 3 köper 3 T-shirts
+(1, 1, 2, 199.99),  -- Kund 1 köper 2 T-shirts
+(2, 3, 1, 899.99),  -- Kund 1 köper 1 par Sneakers
+(2, 2, 1, 499.99),  -- Kund 1 köper 1 par Jeans
+(2, 1, 1, 199.99),  -- Kund 2 köper 1 T-shirt
+(3, 2, 1, 499.99),  -- Kund 3 köper 1 par Jeans
+(3, 3, 1, 899.99);  -- Kund 3 köper 3 T-shirts
 
 
 SELECT * FROM Produkter;
