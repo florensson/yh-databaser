@@ -23,9 +23,6 @@ SELECT * FROM Produkter WHERE Pris > 500; -- Priset är över 500kr
 SELECT * FROM Produkter ORDER BY Pris ASC;
 SELECT * FROM Kunder ORDER BY Registreringsdatum DESC;
 
--- Order by, sortera datan
-SELECT * FROM Produkter ORDER BY Pris ASC;
-SELECT * FROM Kunder ORDER BY Registreringsdatum DESC;
 
 /*
 Om det bråkar med delete och update så kan vi använda: 
