@@ -4,7 +4,7 @@
 Lägger till lite i databasen så det blir något att hantera
 */
 
-INSERT INTO Bestallningar (KundID, Datum) VALUE
+INSERT INTO Bestallningar (KundID, Datum) VALUES
 (1, '2024-03-01'),
 (1, '2024-03-10'),
 (2, '2024-03-05'),
